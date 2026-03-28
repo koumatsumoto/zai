@@ -1,0 +1,9 @@
+packages:
+  - apps/portal
+
+catalog:
+  typescript: ^6
+  vitest: ^4
+  "@vitest/coverage-v8": ^4
+  eslint: ^9
+  typescript-eslint: ^8

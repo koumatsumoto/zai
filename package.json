@@ -1,0 +1,54 @@
+{
+  "name": "@zai/monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=24.13.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @zai/portal dev",
+    "build": "pnpm --filter @zai/portal build",
+    "test": "pnpm --filter @zai/portal test",
+    "lint": "pnpm --filter @zai/portal lint",
+    "format": "prettier --write \"**/*.{ts,tsx,json}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,json}\"",
+    "lint:md": "markdownlint \"**/*.md\" --ignore node_modules",
+    "typecheck": "pnpm --filter @zai/portal typecheck",
+    "prepare": "husky"
+  },
+  "prettier": {
+    "printWidth": 150
+  },
+  "lint-staged": {
+    "apps/portal/**/*.{ts,tsx}": [
+      "pnpm --filter @zai/portal exec eslint --fix",
+      "prettier --write"
+    ],
+    "**/*.json": [
+      "prettier --write"
+    ],
+    "**/*.md": [
+      "prettier --write",
+      "markdownlint --fix"
+    ]
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ],
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "typescript": ">=6"
+      }
+    }
+  },
+  "devDependencies": {
+    "husky": "^9",
+    "lint-staged": "^16",
+    "markdownlint-cli": "^0.43",
+    "prettier": "^3",
+    "typescript": "catalog:"
+  }
+}
