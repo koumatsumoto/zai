@@ -32,6 +32,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Build
+        env:
+          VITE_OAUTH_PROXY_URL: ${{ vars.OAUTH_PROXY_URL }}
         run: pnpm build
 
       - name: Upload artifact
