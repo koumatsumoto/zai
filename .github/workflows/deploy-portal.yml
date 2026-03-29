@@ -11,6 +11,9 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -27,10 +30,25 @@ jobs:
           node-version: '24'
           package-manager-cache: false
 
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
       - name: Enable Corepack pnpm
         run: |
           corepack enable
           corepack install
+
+      - name: Resolve pnpm store path
+        id: pnpm-store
+        run: echo "path=$(pnpm store path --silent)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore pnpm store cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-store.outputs.path }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - run: pnpm install --frozen-lockfile
 
@@ -39,18 +57,10 @@ jobs:
           VITE_OAUTH_PROXY_URL: ${{ vars.OAUTH_PROXY_URL }}
         run: pnpm build
 
-      - name: Package Pages artifact
-        run: |
-          mkdir -p /tmp/github-pages
-          tar --directory apps/portal/dist -cf /tmp/github-pages/artifact.tar .
-          gzip -9 /tmp/github-pages/artifact.tar
-
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-pages-artifact@v4
         with:
-          name: github-pages
-          path: /tmp/github-pages/artifact.tar.gz
-          retention-days: 1
+          path: apps/portal/dist
 
   deploy:
     needs: build
