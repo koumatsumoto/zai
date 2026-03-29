@@ -14,7 +14,7 @@
 ## Data Architecture
 
 - **Backend**: `zai-datastore` (private GitHub repo) — GitHub Issues をデータストアとして使用
-- **認証**: ato OAuth Proxy を共有（`ato:token` を読み取り）
+- **認証**: `gh-auth-bridge` を共有（`gh-auth-bridge:token` を読み取り）
 - **キャッシュ**: localStorage (`zai:` prefix) は GitHub Issues のキャッシュとユーザ設定のみ
 - **1 Issue = 全資産**: `portal` + `asset` ラベルの単一 Issue に全 Holding を JSON で格納
 
@@ -34,7 +34,7 @@ pnpm lint:md      # Markdownlint
 ## Structure
 
 - `apps/portal/` — ポートフォリオ可視化 SPA (@zai/portal)
-  - `features/auth/` — 認証（ato OAuth 共有、token-store, auth-client, AuthGuard）
+  - `features/auth/` — 認証（gh-auth-bridge 共有、token-store, auth-client, AuthGuard）
   - `features/holdings/` — 資産管理（github-api, body-codec, repo-init, aggregation）
   - `shared/lib/` — github-client, errors, rate-limit, storage-keys, forex-store
 
@@ -44,6 +44,6 @@ pnpm lint:md      # Markdownlint
 - `@/` path alias for `src/`
 - Strict TypeScript (`exactOptionalPropertyTypes`, `isolatedDeclarations`, `noUncheckedIndexedAccess`)
 - Immutable state (`readonly` properties)
-- localStorage for caching and user preferences (`zai:` prefix for app data, `ato:` prefix shared with ato for auth tokens)
+- localStorage for caching and user preferences (`zai:` prefix for app data, `gh-auth-bridge:` prefix for shared auth tokens)
 - **個人情報・資産データ・API トークンをリポジトリにコミットしてはならない**
 - `zai-datastore` (private repo) が全金融データの永続化先。ソースコードに資産額・口座情報等を含めない

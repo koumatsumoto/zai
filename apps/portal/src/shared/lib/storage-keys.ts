@@ -1,8 +1,8 @@
-// Auth tokens (shared with ato — same GitHub App + OAuth Proxy)
-export const TOKEN_KEY = "ato:token" as const;
-export const REFRESH_TOKEN_KEY = "ato:refresh-token" as const;
-export const EXPIRES_AT_KEY = "ato:token-expires-at" as const;
-export const REFRESH_EXPIRES_AT_KEY = "ato:refresh-expires-at" as const;
+// Auth tokens (shared via gh-auth-bridge)
+export const TOKEN_KEY = "gh-auth-bridge:token" as const;
+export const REFRESH_TOKEN_KEY = "gh-auth-bridge:refresh-token" as const;
+export const EXPIRES_AT_KEY = "gh-auth-bridge:token-expires-at" as const;
+export const REFRESH_EXPIRES_AT_KEY = "gh-auth-bridge:refresh-expires-at" as const;
 
 // Zai-specific keys
 export const HOLDINGS_KEY = "zai:holdings" as const;
