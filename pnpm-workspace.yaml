@@ -7,3 +7,4 @@ catalog:
   "@vitest/coverage-v8": ^4
   eslint: ^9
   typescript-eslint: ^8
+  "@tanstack/react-query": ^5

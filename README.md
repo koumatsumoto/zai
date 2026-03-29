@@ -25,6 +25,12 @@ pnpm format:check # Prettier check
 pnpm lint:md      # Markdownlint
 ```
 
+## Data Architecture
+
+- 金融データは `zai-datastore` (private GitHub repo) に GitHub Issues として保存
+- 認証は [ato](https://github.com/koumatsumoto/ato) の OAuth Proxy を共有
+- このリポジトリに個人情報・資産データは含めない
+
 ## Deployment
 
 GitHub Pages (`https://koumatsumoto.github.io/zai/`) に自動デプロイ。

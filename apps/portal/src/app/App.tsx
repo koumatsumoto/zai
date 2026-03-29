@@ -1,6 +1,11 @@
 import { RouterProvider } from "react-router";
+import { AppProviders } from "./providers";
 import { router } from "./router";
 
 export function App(): React.JSX.Element {
-  return <RouterProvider router={router} />;
+  return (
+    <AppProviders>
+      <RouterProvider router={router} />
+    </AppProviders>
+  );
 }

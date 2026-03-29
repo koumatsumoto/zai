@@ -1,0 +1,52 @@
+import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AuthProvider } from "@/features/auth/hooks/use-auth";
+import { AuthError, GitHubApiError, TokenRefreshError } from "@/shared/lib/errors";
+import { clearToken, clearAccessToken } from "@/features/auth/lib/token-store";
+import { authLog } from "@/shared/lib/auth-log";
+import "@/features/auth/lib/register-token-refresh";
+
+const queryCache = new QueryCache({
+  onError: (error, query) => {
+    if (error instanceof TokenRefreshError) {
+      if (error.reason === "transient") {
+        authLog("global:auth-error", `query=${String(query.queryKey)} msg=${error.message} reason=transient`);
+        clearAccessToken();
+      } else {
+        authLog("global:auth-error", `query=${String(query.queryKey)} msg=${error.message} reason=invalid_grant`);
+        clearToken();
+      }
+      return;
+    }
+    if (error instanceof AuthError) {
+      authLog("global:auth-error", `query=${String(query.queryKey)} msg=${error.message}`);
+      clearToken();
+    }
+  },
+});
+
+const queryClient = new QueryClient({
+  queryCache,
+  defaultOptions: {
+    queries: {
+      retry: (failureCount, error) => {
+        if (error instanceof AuthError) return false;
+        if (error instanceof GitHubApiError && [403, 404, 422].includes(error.status)) {
+          return false;
+        }
+        return failureCount < 2;
+      },
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
+    },
+    mutations: {
+      retry: false,
+    },
+  },
+});
+
+export function AppProviders({ children }: { children: React.ReactNode }): React.JSX.Element {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>{children}</AuthProvider>
+    </QueryClientProvider>
+  );
+}

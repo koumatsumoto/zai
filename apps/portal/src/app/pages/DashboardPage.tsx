@@ -7,9 +7,21 @@ import { formatJpy, formatPercent } from "@/shared/lib/format";
 import { loadUsdJpyRate } from "@/shared/lib/forex-store";
 
 export function DashboardPage(): React.JSX.Element {
-  const { holdings } = useHoldings();
+  const { holdings, isLoading } = useHoldings();
   const [usdJpyRate] = useState(loadUsdJpyRate);
   const summary = useMemo(() => computePortfolioSummary(holdings, usdJpyRate), [holdings, usdJpyRate]);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4 py-6">
+        <div className="mx-auto h-52 w-52 animate-pulse rounded-full bg-gray-200" />
+        <div className="grid grid-cols-2 gap-3">
+          <div className="h-20 animate-pulse rounded-lg bg-gray-200" />
+          <div className="h-20 animate-pulse rounded-lg bg-gray-200" />
+        </div>
+      </div>
+    );
+  }
 
   if (holdings.length === 0) {
     return (

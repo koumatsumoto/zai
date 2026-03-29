@@ -4,9 +4,11 @@ import { useHoldings } from "@/features/holdings/hooks/use-holdings";
 import { HoldingForm } from "@/features/holdings/components/HoldingForm";
 import { HoldingList } from "@/features/holdings/components/HoldingList";
 import { loadUsdJpyRate, saveUsdJpyRate } from "@/shared/lib/forex-store";
+import { RepoNotConfiguredError } from "@/shared/lib/errors";
+import { REPO_NAME } from "@/features/holdings/lib/repo-constants";
 
 export function HoldingsPage(): React.JSX.Element {
-  const { holdings, add, update, remove } = useHoldings();
+  const { holdings, isLoading, error, add, update, remove, isSaving } = useHoldings();
   const [editing, setEditing] = useState<Holding | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [usdJpyRate, setUsdJpyRate] = useState(loadUsdJpyRate);
@@ -40,10 +42,49 @@ export function HoldingsPage(): React.JSX.Element {
     }
   }, [rateInput, usdJpyRate]);
 
+  if (isLoading) {
+    return (
+      <div className="space-y-3 py-6">
+        {Array.from({ length: 3 }, (_, i) => (
+          <div key={i} className="h-16 animate-pulse rounded-lg bg-gray-200" />
+        ))}
+      </div>
+    );
+  }
+
+  if (error instanceof RepoNotConfiguredError) {
+    return (
+      <div className="py-16 text-center">
+        <p className="text-gray-600">Repository &quot;{REPO_NAME}&quot; not found.</p>
+        <a
+          href={`https://github.com/new?name=${REPO_NAME}&visibility=private`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 inline-block rounded bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
+        >
+          Create {REPO_NAME}
+        </a>
+        <p className="mt-2 text-xs text-gray-400">Create a private repository, then reload this page.</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="py-16 text-center">
+        <p className="text-red-600">Failed to load holdings</p>
+        <p className="mt-1 text-sm text-gray-500">{error.message}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold">Holdings</h2>
+        <div className="flex items-center gap-2">
+          <h2 className="text-xl font-bold">Holdings</h2>
+          {isSaving && <span className="text-xs text-gray-400">Saving...</span>}
+        </div>
         <div className="flex items-center gap-3">
           <label className="flex items-center gap-1 text-xs text-gray-500">
             USD/JPY
