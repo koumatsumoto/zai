@@ -40,12 +40,7 @@ export function LoginPage(): React.JSX.Element {
         >
           Sign in with GitHub
         </button>
-        <p className="text-xs text-gray-400">
-          Uses the same authentication as{" "}
-          <a href="https://koumatsumoto.github.io/ato/" className="underline hover:text-gray-600">
-            ato
-          </a>
-        </p>
+        <p className="text-xs text-gray-400">Uses the shared authentication bridge backed by GitHub OAuth</p>
       </div>
     </div>
   );

@@ -2,8 +2,8 @@ import type { TokenSet } from "@/features/auth/types";
 import { authLog } from "@/shared/lib/auth-log";
 import { TOKEN_KEY, REFRESH_TOKEN_KEY, EXPIRES_AT_KEY, REFRESH_EXPIRES_AT_KEY } from "@/shared/lib/storage-keys";
 
-export const TOKEN_CLEARED_EVENT = "zai:token-cleared";
-export const TOKEN_REFRESHED_EVENT = "zai:token-refreshed";
+export const TOKEN_CLEARED_EVENT = "gh-auth-bridge:token-cleared";
+export const TOKEN_REFRESHED_EVENT = "gh-auth-bridge:token-refreshed";
 
 export function getToken(): string | null {
   const token = localStorage.getItem(TOKEN_KEY);
