@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { useAuth } from "@/features/auth/hooks/use-auth";
+import { useAuth } from "@koumatsumoto/gh-auth-bridge-client/react";
 import { consumeRedirectPath } from "@/features/auth/lib/redirect-store";
 
 export function LoginPage(): React.JSX.Element {

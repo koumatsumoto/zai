@@ -14,6 +14,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@koumatsumoto/gh-auth-bridge-client": "^0.1.0",
     "@tanstack/react-query": "catalog:",
     "react": "^19",
     "react-dom": "^19",

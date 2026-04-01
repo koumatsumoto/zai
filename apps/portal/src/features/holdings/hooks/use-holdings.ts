@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "@/features/auth/hooks/use-auth";
+import { useAuth } from "@koumatsumoto/gh-auth-bridge-client/react";
 import type { Holding, HoldingInput } from "../types";
 import { fetchHoldings, saveHoldings } from "../lib/github-api";
 import { ensureRepository } from "../lib/repo-init";
