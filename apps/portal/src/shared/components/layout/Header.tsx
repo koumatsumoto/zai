@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router";
-import { useAuth } from "@/features/auth/hooks/use-auth";
+import { useAuth } from "@koumatsumoto/gh-auth-bridge-client/react";
 
 export function Header(): React.JSX.Element {
   const location = useLocation();

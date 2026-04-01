@@ -1,4 +1,4 @@
-import { githubFetch, throwIfNotOk } from "@/shared/lib/github-client";
+import { githubFetch, throwIfNotOk } from "@koumatsumoto/gh-auth-bridge-client";
 import { ASSETS_ISSUE_NUMBER_KEY } from "@/shared/lib/storage-keys";
 import type { Holding } from "../types";
 import { encodeHoldings, decodeHoldings } from "./body-codec";
